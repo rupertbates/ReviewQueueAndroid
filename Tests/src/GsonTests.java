@@ -5,10 +5,10 @@ import com.reviewQueue.model.MusicReview;
 import com.reviewQueue.model.MusicTypes;
 import com.reviewQueue.model.Review;
 import com.reviewQueue.model.ReviewTypes;
+import com.reviewQueue.service.ReviewConverterService;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class GsonTests {
         reviews.add(r2);
 
         String json = gson.toJson(reviews);
-        //Type collectionType = new TypeToken<List<Review>>(){}.getType();
+        //Type collectionType = new TypeToken<List<ReviewQueueApplication>>(){}.getType();
         //Collection<ReviewTypes> reviews = gson.fromJson(json, collectionType);
 
 
@@ -63,5 +63,8 @@ public class GsonTests {
         Collection<Review> reviews = gson.fromJson(json, collectionType);
 
         Assert.assertTrue(reviews.size() > 0);
+
+        Collection<Review> reviews2 = new ReviewConverterService().convertReviews(json);
+        Assert.assertTrue(reviews.size() == reviews2.size());
     }
 }

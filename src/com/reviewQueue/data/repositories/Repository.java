@@ -35,8 +35,7 @@ public class Repository<T extends Entity> {
     {
         _dbFilePath = dbFilePath;
         _config = config;
-        tClass = (Class<T>) ((ParameterizedType) getClass()
-                                        .getGenericSuperclass()).getActualTypeArguments()[0];
+        tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
     }
 

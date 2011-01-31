@@ -3,7 +3,7 @@
       package="com.reviewQueue"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:label="ReviewQueueAndroid" android:icon="@drawable/icon">
+    <application android:name="com.reviewQueue.ReviewQueueApplication" android:label="ReviewQueueAndroid" android:icon="@drawable/icon">
         <activity android:name=".activities.HomeActivity"
                   android:label="@string/app_name">
             <intent-filter>

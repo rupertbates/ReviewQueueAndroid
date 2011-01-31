@@ -1,4 +1,5 @@
 import com.reviewQueue.data.repositories.Repository;
+import com.reviewQueue.data.repositories.UserRepository;
 import com.reviewQueue.model.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +11,7 @@ public class TestRepository {
     @Test
     public void can_insert_user_locally(){
         String dir = System.getProperty("user.dir") + "\\test.db4o";
-        Repository<User> repository = new Repository<User>(dir);
+        UserRepository repository = new UserRepository(dir);
         User u = new User();
         u.FullName = "Rupert Bates";
         u.Email = "rupert.bates@guardian.co.uk";
