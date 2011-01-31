@@ -45,7 +45,7 @@ public class HomeActivity extends RoboListActivity
         }
         catch (IOException ex)
         {
-            //log it or something;
+            String msg = ex.getMessage();
         }
 
     }
