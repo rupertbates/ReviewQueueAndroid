@@ -21,7 +21,7 @@ public class TestHttpClient {
     public void can_get_results_from_live_webserver() throws IOException
     {
         String content = ReviewFetcherService.getReviewJson(ReviewTypes.Music);
-        Assert.assertTrue(content != "");
+        Assert.assertTrue(!content.equals(""));
 
     }
 }

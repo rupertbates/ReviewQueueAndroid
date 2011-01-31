@@ -17,7 +17,7 @@ public class ReviewFetcherService {
 
     public static String getReviewJson(ReviewTypes reviewType) throws IOException
     {
-        String url = String.format("http://reviewqueue.stage.guardianprofessional.co.uk/review/%1$/json", reviewType.Name);
+        String url = String.format("http://reviewqueue.stage.guardianprofessional.co.uk/review/%s/json", reviewType.Name);
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet httpget = new HttpGet(url);
         HttpResponse response = httpclient.execute(httpget);
