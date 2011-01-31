@@ -3,7 +3,7 @@
       package="com.reviewQueue"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:name="com.reviewQueue.ReviewQueueApplication" android:label="ReviewQueueAndroid" android:icon="@drawable/icon">
+    <application android:name="com.reviewQueue.ReviewQueueApplication" android:label="ReviewQueueAndroid" android:icon="@drawable/icon" android:debuggable="true">
         <activity android:name=".activities.HomeActivity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -11,5 +11,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.Test"/>
     </application>
 </manifest> 
