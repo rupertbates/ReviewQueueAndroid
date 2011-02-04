@@ -18,6 +18,6 @@ public class TestRepository {
         repository.save(u);
         List<User> users = repository.getAll();
         Assert.assertTrue(users.size() > 0);
-    }
 
+    }
 }
