@@ -67,11 +67,11 @@ public class ReviewProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + NOTES_TABLE_NAME + " ("
-                    + Definitions.Columns._ID + " INTEGER PRIMARY KEY,"
-                    + Definitions.Columns.TITLE + " TEXT,"
-                    + Definitions.Columns.NOTE + " TEXT,"
-                    + Definitions.Columns.CREATED_DATE + " INTEGER,"
-                    + Definitions.Columns.MODIFIED_DATE + " INTEGER"
+                    + GuardianContentContract.Columns._ID + " INTEGER PRIMARY KEY,"
+                    + GuardianContentContract.Columns.TITLE + " TEXT,"
+                    + GuardianContentContract.Columns.NOTE + " TEXT,"
+                    + GuardianContentContract.Columns.CREATED_DATE + " INTEGER,"
+                    + GuardianContentContract.Columns.MODIFIED_DATE + " INTEGER"
                     + ");");
         }
 
@@ -105,7 +105,7 @@ public class ReviewProvider extends ContentProvider {
 
         case NOTE_ID:
             qb.setProjectionMap(sNotesProjectionMap);
-            qb.appendWhere(Definitions.Columns._ID + "=" + uri.getPathSegments().get(1));
+            qb.appendWhere(GuardianContentContract.Columns._ID + "=" + uri.getPathSegments().get(1));
             break;
 
         case LIVE_FOLDER_NOTES:
@@ -119,7 +119,7 @@ public class ReviewProvider extends ContentProvider {
         // If no sort order is specified use the default
         String orderBy;
         if (TextUtils.isEmpty(sortOrder)) {
-            orderBy = Definitions.Columns.DEFAULT_SORT_ORDER;
+            orderBy = GuardianContentContract.Columns.DEFAULT_SORT_ORDER;
         } else {
             orderBy = sortOrder;
         }
@@ -138,10 +138,10 @@ public class ReviewProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
         case NOTES:
         case LIVE_FOLDER_NOTES:
-            return Definitions.Columns.CONTENT_TYPE;
+            return GuardianContentContract.Columns.CONTENT_TYPE;
 
         case NOTE_ID:
-            return Definitions.Columns.CONTENT_ITEM_TYPE;
+            return GuardianContentContract.Columns.CONTENT_ITEM_TYPE;
 
         default:
             throw new IllegalArgumentException("Unknown URI " + uri);
@@ -165,27 +165,27 @@ public class ReviewProvider extends ContentProvider {
         Long now = Long.valueOf(System.currentTimeMillis());
 
         // Make sure that the fields are all set
-        if (values.containsKey(Definitions.Columns.CREATED_DATE) == false) {
-            values.put(Definitions.Columns.CREATED_DATE, now);
+        if (values.containsKey(GuardianContentContract.Columns.CREATED_DATE) == false) {
+            values.put(GuardianContentContract.Columns.CREATED_DATE, now);
         }
 
-        if (values.containsKey(Definitions.Columns.MODIFIED_DATE) == false) {
-            values.put(Definitions.Columns.MODIFIED_DATE, now);
+        if (values.containsKey(GuardianContentContract.Columns.MODIFIED_DATE) == false) {
+            values.put(GuardianContentContract.Columns.MODIFIED_DATE, now);
         }
 
-        if (values.containsKey(Definitions.Columns.TITLE) == false) {
+        if (values.containsKey(GuardianContentContract.Columns.TITLE) == false) {
             Resources r = Resources.getSystem();
-            values.put(Definitions.Columns.TITLE, r.getString(android.R.string.untitled));
+            values.put(GuardianContentContract.Columns.TITLE, r.getString(android.R.string.untitled));
         }
 
-        if (values.containsKey(Definitions.Columns.NOTE) == false) {
-            values.put(Definitions.Columns.NOTE, "");
+        if (values.containsKey(GuardianContentContract.Columns.NOTE) == false) {
+            values.put(GuardianContentContract.Columns.NOTE, "");
         }
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        long rowId = db.insert(NOTES_TABLE_NAME, Definitions.Columns.NOTE, values);
+        long rowId = db.insert(NOTES_TABLE_NAME, GuardianContentContract.Columns.NOTE, values);
         if (rowId > 0) {
-            Uri noteUri = ContentUris.withAppendedId(Definitions.Columns.CONTENT_URI, rowId);
+            Uri noteUri = ContentUris.withAppendedId(GuardianContentContract.Columns.CONTENT_URI, rowId);
             getContext().getContentResolver().notifyChange(noteUri, null);
             return noteUri;
         }
@@ -204,7 +204,7 @@ public class ReviewProvider extends ContentProvider {
 
         case NOTE_ID:
             String noteId = uri.getPathSegments().get(1);
-            count = db.delete(NOTES_TABLE_NAME, Definitions.Columns._ID + "=" + noteId
+            count = db.delete(NOTES_TABLE_NAME, GuardianContentContract.Columns._ID + "=" + noteId
                     + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
             break;
 
@@ -227,7 +227,7 @@ public class ReviewProvider extends ContentProvider {
 
         case NOTE_ID:
             String noteId = uri.getPathSegments().get(1);
-            count = db.update(NOTES_TABLE_NAME, values, Definitions.Columns._ID + "=" + noteId
+            count = db.update(NOTES_TABLE_NAME, values, GuardianContentContract.Columns._ID + "=" + noteId
                     + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
             break;
 
@@ -241,22 +241,22 @@ public class ReviewProvider extends ContentProvider {
 
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(Definitions.AUTHORITY, "notes", NOTES);
-        sUriMatcher.addURI(Definitions.AUTHORITY, "notes/#", NOTE_ID);
-        sUriMatcher.addURI(Definitions.AUTHORITY, "live_folders/notes", LIVE_FOLDER_NOTES);
+        sUriMatcher.addURI(GuardianContentContract.AUTHORITY, "notes", NOTES);
+        sUriMatcher.addURI(GuardianContentContract.AUTHORITY, "notes/#", NOTE_ID);
+        sUriMatcher.addURI(GuardianContentContract.AUTHORITY, "live_folders/notes", LIVE_FOLDER_NOTES);
 
         sNotesProjectionMap = new HashMap<String, String>();
-        sNotesProjectionMap.put(Definitions.Columns._ID, Definitions.Columns._ID);
-        sNotesProjectionMap.put(Definitions.Columns.TITLE, Definitions.Columns.TITLE);
-        sNotesProjectionMap.put(Definitions.Columns.NOTE, Definitions.Columns.NOTE);
-        sNotesProjectionMap.put(Definitions.Columns.CREATED_DATE, Definitions.Columns.CREATED_DATE);
-        sNotesProjectionMap.put(Definitions.Columns.MODIFIED_DATE, Definitions.Columns.MODIFIED_DATE);
+        sNotesProjectionMap.put(GuardianContentContract.Columns._ID, GuardianContentContract.Columns._ID);
+        sNotesProjectionMap.put(GuardianContentContract.Columns.TITLE, GuardianContentContract.Columns.TITLE);
+        sNotesProjectionMap.put(GuardianContentContract.Columns.NOTE, GuardianContentContract.Columns.NOTE);
+        sNotesProjectionMap.put(GuardianContentContract.Columns.CREATED_DATE, GuardianContentContract.Columns.CREATED_DATE);
+        sNotesProjectionMap.put(GuardianContentContract.Columns.MODIFIED_DATE, GuardianContentContract.Columns.MODIFIED_DATE);
 
         // Support for Live Folders.
         sLiveFolderProjectionMap = new HashMap<String, String>();
-        sLiveFolderProjectionMap.put(LiveFolders._ID, Definitions.Columns._ID + " AS " +
+        sLiveFolderProjectionMap.put(LiveFolders._ID, GuardianContentContract.Columns._ID + " AS " +
                 LiveFolders._ID);
-        sLiveFolderProjectionMap.put(LiveFolders.NAME, Definitions.Columns.TITLE + " AS " +
+        sLiveFolderProjectionMap.put(LiveFolders.NAME, GuardianContentContract.Columns.TITLE + " AS " +
                 LiveFolders.NAME);
         // Add more columns here for more robust Live Folders.
     }
